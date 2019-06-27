@@ -1,0 +1,35 @@
+---
+- name: Another network playbook example
+  # The line below uses regex to parse the inventory file
+  hosts: ~^arista
+  # gather_fact Always runs setup.py (server module)
+  gather_facts: no # v2.5=< no is default if network_cli is selected for connection
+   # if turned to yes, you will collect information about the local host
+  vars:
+    switchint: 13
+    switchver: "4.17"
+  tasks:
+    # if we run this an have gather_facts set to no, then ansible_facts will be our network devs
+    - name: Harvest Arista facts
+      eos_facts:
+      when: ansible_network_os == 'eos'
+
+    - name: Push to the local system -- by special tag resquest only
+      copy:
+        # user the to_no_json filter to display pretty json output
+        content: "{{ ansible_facts | to_nice_json }}"
+        dest: "/home/student/mycode2/{{ inventory_hostname }}.txt"
+        #the inventory hostname variable always resolves to the current host being iterated against
+      tags:
+        - never
+        - grabfacts
+        
+         # precheck conditional number of interfaces
+    - fail:
+        msg: "FAIL.  Network device lacks the correct number of interfaces."
+      when: ansible_facts.net_interfaces|length != switchint
+    
+    - fail:
+        msg: "FAIL.  Netowrk device is running the wrong firmware."
+      when: "'4.17' not in ansible_facts.net_version"
+
