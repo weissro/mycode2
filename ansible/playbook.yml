@@ -1,0 +1,11 @@
+---
+- name: Copy a file to everybody   #name is optional
+  hosts: napyaclass
+
+  tasks:
+  - name: Using the copy command
+    copy:
+        src: yamlearn.yaml
+        dest: yamlearn.yaml
+
+

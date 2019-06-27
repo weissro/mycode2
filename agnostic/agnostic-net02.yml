@@ -1,0 +1,35 @@
+---
+- name: Agnostic net example
+  hosts: all
+  gather_facts: false
+
+  vars:
+    ansible_connection: network_cli
+    ansible_network_os: eos
+    ansible_become: yes
+    ansible_become_method: enable
+    ansible_user: admin
+    ansible_ssh_pass: alta3
+
+  tasks:
+    # Run a show run command and save what is returned by the command as results
+    - name: run show version on remote devices
+      cli_command:
+        command: show version
+      register: results
+
+    # print out the variable results
+    - name: print out what is returned by show version
+      debug: 
+        var: results
+
+    - name: print show run
+      cli_command:
+        command: show run
+      register: res2
+
+    - name: print out show run
+      debug:
+        msg: "{{ res2.stdout_lines}}"
+
+
