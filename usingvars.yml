@@ -1,0 +1,22 @@
+---
+- name: Using debug with ansible_vars
+  hosts: nam
+
+  tasks:
+  - name: Print out ansible_os_family
+    debug:
+      msg: "This machine is in the {{ ansible_os_family }} family"
+
+
+  - name: Print out the ansible_pkg_mgr
+    debug:
+      var: ansible_pkg_mgr
+
+  - name: Get Nam's Personal Information
+    shell: ls
+    register: goodies
+
+  - name: Print out the goodies
+    debug:
+      var: goodies
+

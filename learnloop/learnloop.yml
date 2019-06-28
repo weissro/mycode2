@@ -1,0 +1,15 @@
+---
+- name: Larnin Loops
+  hosts: localhost
+  gather_facts: no
+
+  tasks: 
+    - name: Debug through a loop
+      debug: 
+        msg: "We want this to print out next {{ item }}"
+      #with_items:
+      loop:  
+      - dog
+      - cat
+      - hamster
+

@@ -1,0 +1,16 @@
+---
+- name: Fixen fer scripts
+  hosts: planet-express
+ 
+
+  tasks: 
+    - name: Using the script module
+      script: /home/student/texasroxx.py
+        args:
+          executable: python3
+      register: results
+
+    - name: print out results
+      debug:
+        var: results
+
